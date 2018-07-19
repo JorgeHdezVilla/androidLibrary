@@ -61,9 +61,10 @@ dependencies {
 
 }
 
-group = 'com.github.reyhac.libreria' // Change this to match your package name
+group = 'com.android.library' // Change this to match your package name
 
 apply plugin: 'com.github.dcendents.android-maven'
+
 install {
     repositories.mavenInstaller {
         pom {
@@ -83,14 +84,14 @@ install {
 
                 developers {
                     developer {
-                        id 'reyhac'
-                        name 'Juan Reynaldo Escobar'
-                        email 'jrescobarmiron.com'
+                        id 'kokcs'
+                        name 'Jorge Hdez'
+                        email 'jorge24011992@gmail.com'
                     }
                 }
                 scm {
-                    connection 'https://github.com/reyhachy/libreria.git'
-                    developerConnection 'https://github.com/reyhachy/libreria.git'
+                    connection 'https://github.com/JorgeHdezVilla/androidLibrary'
+                    developerConnection 'https://github.com/JorgeHdezVilla/androidLibrary'
 
                 }
             }
@@ -127,27 +128,27 @@ artifacts {
     archives javadocJar
     archives sourcesJar
 }
-version = '2.4.0'
+
+version = '1.0.0'
 bintray {
-    user = 'reyhac'
-    key = '54e82ce9da2e0bfc9130d5ec45f31d2c00f81657'
+    user = 'kokcs'
+    key = '860685032263e5ac0ba7ee6fdc5940c4218ed1fd'
     pkg {
         repo = 'maven'
         name = 'utilities'
 
         version {
-            name = '2.4.0'
-            desc = 'test'
+            name = '1.0.0'
+            desc = 'Android Library'
             released = new Date()
-            vcsTag = '2.4.0'
+            vcsTag = '1.0.0'
         }
 
         licenses = ['MIT']
         publish = true
         publicDownloadNumbers = true
-        vcsUrl = 'https://github.com/reyhachy/libreria.git'
-        websiteUrl = 'https://github.com/reyhachy/libreria  '
+        vcsUrl = 'https://github.com/JorgeHdezVilla/androidLibrary'
+        websiteUrl = 'https://github.com/JorgeHdezVilla/androidLibrary'
     }
     configurations = ['archives']
-
 }
