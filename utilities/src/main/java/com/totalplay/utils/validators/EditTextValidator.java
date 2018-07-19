@@ -18,6 +18,13 @@ public class EditTextValidator extends FormValidator.Validator {
     private final int minCharacters;
     private final int maxCharacters;
 
+    public EditTextValidator(EditText editText, int errorMessage) {
+        this.editText = editText;
+        this.errorMessage = errorMessage;
+        this.minCharacters = -1;
+        this.maxCharacters = -1;
+        this.pattern = null;
+    }
 
     public EditTextValidator(EditText editText, String regex, int errorMessage) {
         this.editText = editText;
@@ -41,11 +48,11 @@ public class EditTextValidator extends FormValidator.Validator {
     @Override
     public boolean isValid() {
         boolean valid = true;
-        ViewGroup viewGroup = ((ViewGroup)editText.getParent());
+        ViewGroup viewGroup = ((ViewGroup) editText.getParent());
         ViewGroup secondViewGroup = (ViewGroup) editText.getParent().getParent();
         if (editText.getVisibility() == View.VISIBLE
                 && (viewGroup == null || viewGroup.getVisibility() == View.VISIBLE)
-                && (secondViewGroup == null || secondViewGroup.getVisibility() == View.VISIBLE)){
+                && (secondViewGroup == null || secondViewGroup.getVisibility() == View.VISIBLE)) {
             if (minCharacters != -1) {
                 valid = editText.getText().toString().trim().length() >= minCharacters;
             }
@@ -55,6 +62,8 @@ public class EditTextValidator extends FormValidator.Validator {
             if (pattern != null) {
                 Matcher matcher = pattern.matcher(editText.getText().toString().trim());
                 return valid & matcher.matches();
+            } else {
+                valid = !editText.getText().toString().trim().isEmpty();
             }
         }
         return valid;

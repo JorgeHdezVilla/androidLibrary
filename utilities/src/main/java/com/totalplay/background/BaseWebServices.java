@@ -31,7 +31,7 @@ public class BaseWebServices {
         builder.readTimeout(180, TimeUnit.SECONDS);
         builder.connectTimeout(180, TimeUnit.SECONDS);
 
-        if (BuildConfig.DEBUG) {
+        if (insecureHttp) {
             HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
             interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
             builder.addInterceptor(interceptor);
@@ -51,7 +51,7 @@ public class BaseWebServices {
         builder.readTimeout(180, TimeUnit.SECONDS);
         builder.connectTimeout(180, TimeUnit.SECONDS);
 
-        if (BuildConfig.DEBUG) {
+        if (insecureHttp) {
             HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
             interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
             builder.addInterceptor(interceptor);
@@ -149,7 +149,7 @@ public class BaseWebServices {
             builder.hostnameVerifier((hostname, session) -> true);
 
             builder.addInterceptor(new LoggingInterceptor.Builder()
-                    .loggable(BuildConfig.DEBUG)
+                    .loggable(true)
                     .setLevel(Level.BASIC)
                     .log(Platform.INFO)
                     .request("Request")
