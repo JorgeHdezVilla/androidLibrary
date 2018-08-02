@@ -1,11 +1,9 @@
 package com.library.background;
 
 import android.content.Context;
-import android.util.Log;
+import android.os.Handler;
 
 import com.google.gson.Gson;
-import com.orhanobut.logger.BuildConfig;
-import com.orhanobut.logger.Logger;
 import com.library.utils.ConnectionUtils;
 
 import org.json.JSONArray;
@@ -53,20 +51,17 @@ public abstract class BaseWSManager<D extends BaseDefinition> {
 
     protected abstract D getDefinition();
 
-//    protected abstract Call<ResponseBody> getWebService(String webServiceValue, WSBaseRequestInterface WSBaseRequest);
-//
-//    protected abstract Call<ResponseBody> getQueryWebService(String webServiceValue, String requestValue);
-
     protected abstract String getJsonDebug(String requestUrl);
 
     protected abstract boolean getErrorDebugEnabled();
 
     protected abstract boolean getDebugEnabled();
 
+    protected abstract long getRequestTime();
+
     public <R extends WSBaseResponseInterface> R requestWsSync(Class<R> tClass, String webServiceKey, Call<ResponseBody> call) {
         if (getDebugEnabled()) {
             Gson gson = new Gson();
-//            Logger.d(gson.toJson(wsBaseRequest));
             return gson.fromJson(getJsonDebug(webServiceKey), tClass);
         }
         try {
@@ -88,25 +83,27 @@ public abstract class BaseWSManager<D extends BaseDefinition> {
     }
 
     public <R extends WSBaseResponseInterface> BaseWSManager requestWs(final Class<R> tClass, final String webServiceKey, Call<ResponseBody> call) {
-//        ((OkHttpCall) ((ExecutorCallAdapterFactory.ExecutorCallbackCall) call).delegate).args
         if (getDebugEnabled()) {
-            Gson gson = new Gson();
-            R response;
-            response = gson.fromJson(getJsonDebug(webServiceKey), tClass);
-            if (BuildConfig.DEBUG) {
-                Logger.d(webServiceKey);
-                Log.d(":V", webServiceKey);
-            }
-            if (getErrorDebugEnabled()) {
-                if (errorRegisters.contains(webServiceKey)) {
-                    mWSCallback.onSuccessLoadResponse(webServiceKey, response);
-                } else {
-                    errorRegisters.add(webServiceKey);
-                    mWSCallback.onErrorLoadResponse(webServiceKey, "");
+            mWSCallback.onRequestWS(webServiceKey);
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Gson gson = new Gson();
+                    R response;
+                    response = gson.fromJson(getJsonDebug(webServiceKey), tClass);
+                    if (getErrorDebugEnabled()) {
+                        if (errorRegisters.contains(webServiceKey)) {
+                            mWSCallback.onSuccessLoadResponse(webServiceKey, response);
+                        } else {
+                            errorRegisters.add(webServiceKey);
+                            mWSCallback.onErrorLoadResponse(webServiceKey, "");
+                        }
+                    } else {
+                        mWSCallback.onSuccessLoadResponse(webServiceKey, response);
+                    }
                 }
-            } else {
-                mWSCallback.onSuccessLoadResponse(webServiceKey, response);
-            }
+            }, getRequestTime());
             return this;
         }
         if (ConnectionUtils.isConnected(mContext)) {
@@ -152,8 +149,6 @@ public abstract class BaseWSManager<D extends BaseDefinition> {
         try {
             new JSONObject(test);
         } catch (JSONException ex) {
-            // edited, to include @Arthur's comment
-            // e.g. in case JSONArray is valid as well...
             try {
                 new JSONArray(test);
             } catch (JSONException ex1) {

@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 25
@@ -58,10 +59,11 @@ dependencies {
     }
 
     testImplementation 'junit:junit:4.12'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
 }
 
-group = 'com.android.library' // Change this to match your package name
+group = 'com.test.utilities' // Change this to match your package name
 
 apply plugin: 'com.github.dcendents.android-maven'
 
@@ -129,19 +131,19 @@ artifacts {
     archives sourcesJar
 }
 
-version = '1.0.0'
+version = '1.0.2'
 bintray {
     user = 'kokcs'
     key = '860685032263e5ac0ba7ee6fdc5940c4218ed1fd'
     pkg {
-        repo = 'maven'
+        repo = 'AndroidLibrary'
         name = 'utilities'
 
         version {
-            name = '1.0.0'
+            name = '1.0.2'
             desc = 'Android Library'
             released = new Date()
-            vcsTag = '1.0.0'
+            vcsTag = '1.0.2'
         }
 
         licenses = ['MIT']
@@ -151,4 +153,7 @@ bintray {
         websiteUrl = 'https://github.com/JorgeHdezVilla/androidLibrary'
     }
     configurations = ['archives']
+}
+repositories {
+    mavenCentral()
 }

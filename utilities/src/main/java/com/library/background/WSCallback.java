@@ -5,11 +5,11 @@ package com.library.background;
  * FFM
  */
 
-public interface WSCallback<R extends WSBaseResponseInterface> {
+public interface WSCallback {
 
     void onRequestWS(String requestUrl);
 
-    void onSuccessLoadResponse(String requestUrl, R baseResponse);
+    void onSuccessLoadResponse(String requestUrl, WSBaseResponseInterface baseResponse);
 
     void onErrorLoadResponse(String requestUrl, String messageError);
 
