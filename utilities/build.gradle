@@ -41,9 +41,6 @@ apply plugin: 'realm-android'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
     implementation 'com.android.support:appcompat-v7:25.4.0'
 
     implementation 'com.squareup.retrofit2:converter-gson:2.2.0'
@@ -131,7 +128,11 @@ artifacts {
     archives sourcesJar
 }
 
-version = '1.0.2'
+subprojects {
+    tasks.withType(Javadoc).all{ enabled = false }
+}
+
+version = '1.0.6'
 bintray {
     user = 'kokcs'
     key = '860685032263e5ac0ba7ee6fdc5940c4218ed1fd'
@@ -140,10 +141,10 @@ bintray {
         name = 'utilities'
 
         version {
-            name = '1.0.2'
+            name = '1.0.6'
             desc = 'Android Library'
             released = new Date()
-            vcsTag = '1.0.2'
+            vcsTag = '1.0.6'
         }
 
         licenses = ['MIT']
