@@ -1,5 +1,7 @@
 package com.library.utils.validators
 
+import com.library.utils.MessageUtils
+
 
 @Suppress("UNUSED")
 class ViewGroupValidator : FormValidator.Validator {
@@ -8,6 +10,7 @@ class ViewGroupValidator : FormValidator.Validator {
     private val validators: Array<FormValidator.Validator>
     private val showAllErrors: Boolean
     private val valueActivator: Boolean
+    private var messageError: String
 
     constructor(validator: FormValidator.Validator, validators: Array<FormValidator.Validator>,
                 showAllErrors: Boolean, valueActivator: Boolean) {
@@ -15,13 +18,15 @@ class ViewGroupValidator : FormValidator.Validator {
         this.validators = validators
         this.showAllErrors = showAllErrors
         this.valueActivator = valueActivator
+        messageError = ""
     }
 
-    constructor(validators: Array<FormValidator.Validator>, showAllErrors: Boolean) {
+    constructor(validators: Array<FormValidator.Validator>, showAllErrors: Boolean, messageError: String = "") {
         this.validator = null
         this.validators = validators
         this.showAllErrors = showAllErrors
         this.valueActivator = true
+        this.messageError = messageError
     }
 
     override val isValid: Boolean
@@ -29,10 +34,22 @@ class ViewGroupValidator : FormValidator.Validator {
             var valid = true
             val result = validator?.isValid ?: true
             if (result == valueActivator) {
-                for (validator in validators) {
-                    validator.context = context
-                    if (!validator.isValid) {
-                        valid = false
+                if (showAllErrors) {
+                    for (validator in validators) {
+                        validator.context = context
+                        if (!validator.isValid) {
+                            valid = false
+                            validator.showError()
+                        }
+                    }
+                } else {
+                    for (validator in validators) {
+                        validator.context = context
+                        if (!validator.isValid) {
+                            valid = false
+                            validator.showError()
+                            break
+                        }
                     }
                 }
             }
@@ -40,19 +57,8 @@ class ViewGroupValidator : FormValidator.Validator {
         }
 
     override fun showError() {
-        if (showAllErrors) {
-            for (validator in validators) {
-                if (!validator.isValid) {
-                    validator.showError()
-                }
-            }
-        } else {
-            for (validator in validators) {
-                if (!validator.isValid) {
-                    validator.showError()
-                    break
-                }
-            }
+        if (messageError != "") {
+            MessageUtils.toast(context, messageError)
         }
     }
 

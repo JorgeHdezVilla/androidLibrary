@@ -15,7 +15,11 @@ public class MainActivity extends AppCompatActivity {
 
         FormValidator formValidator = new FormValidator(this, true);
         formValidator.addValidators(
-                new CustomValidator(() -> true, R.string.app_name)
+                new CustomValidator(() -> {
+                    Integer x = 5;
+                    Integer y = 6;
+                    return x == y;
+                }, "puto")
         );
     }
 }

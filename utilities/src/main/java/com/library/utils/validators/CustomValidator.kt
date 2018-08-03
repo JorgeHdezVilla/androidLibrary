@@ -2,17 +2,25 @@ package com.library.utils.validators
 
 import com.library.utils.MessageUtils
 
-class CustomValidator(validator: () -> Boolean, val errorMessage: Int) : FormValidator.Validator() {
+interface CustomValidatorCallback {
+    fun onCheckValidation(): Boolean
+}
 
-    var function: Boolean = false
+class CustomValidator(validator: () -> Boolean, private val errorMessage: String) : FormValidator.Validator() {
+
+    private val callback: CustomValidatorCallback
 
     init {
-        function = validator()
+        callback = object : CustomValidatorCallback {
+            override fun onCheckValidation(): Boolean {
+                return validator()
+            }
+        }
     }
 
     override val isValid: Boolean
         get() {
-            return function
+            return callback.onCheckValidation()
         }
 
     override fun showError() {
