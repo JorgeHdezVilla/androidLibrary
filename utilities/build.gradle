@@ -132,7 +132,7 @@ subprojects {
     tasks.withType(Javadoc).all { enabled = false }
 }
 
-version = '1.1.4'
+version = '1.2.0'
 bintray {
     user = 'kokcs'
     key = '860685032263e5ac0ba7ee6fdc5940c4218ed1fd'
@@ -141,10 +141,10 @@ bintray {
         name = 'utilities'
 
         version {
-            name = '1.1.4'
+            name = '1.2.0'
             desc = 'Android Library'
             released = new Date()
-            vcsTag = '1.1.4'
+            vcsTag = '1.2.0'
         }
 
         licenses = ['MIT']

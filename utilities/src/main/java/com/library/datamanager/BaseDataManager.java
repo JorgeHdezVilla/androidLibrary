@@ -17,6 +17,7 @@ import io.realm.RealmResults;
  * EMP
  */
 
+@SuppressWarnings("unused")
 public abstract class BaseDataManager {
 
     public Realm mRealm;
@@ -163,7 +164,7 @@ public abstract class BaseDataManager {
         public <T extends RealmModel> ArrayList<T> list() {
             return
                     attrSorted.equals("") ? new ArrayList<>(mRealm.copyFromRealm(realmQuery.findAll()))
-                            : new ArrayList<>(mRealm.copyFromRealm(realmQuery.findAllSorted(attrSorted)));
+                            : new ArrayList<>(mRealm.copyFromRealm(realmQuery.findAll().sort(attrSorted)));
         }
 
         public Query order(String attrSorted) {
