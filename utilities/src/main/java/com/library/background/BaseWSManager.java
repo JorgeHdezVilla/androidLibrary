@@ -62,6 +62,11 @@ public abstract class BaseWSManager<D extends BaseDefinition> {
     public <R extends WSBaseResponseInterface> R requestWsSync(Class<R> tClass, String webServiceKey, Call<ResponseBody> call) {
         if (getDebugEnabled()) {
             Gson gson = new Gson();
+            try {
+                Thread.sleep(getRequestTime());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             return gson.fromJson(getJsonDebug(webServiceKey), tClass);
         }
         try {
@@ -124,7 +129,8 @@ public abstract class BaseWSManager<D extends BaseDefinition> {
                             } else {
                                 mWSCallback.onErrorLoadResponse(webServiceKey, "Without response frow ws");
                             }
-                        } catch (IOException e) {
+                        } catch (Exception e) {
+                            mWSCallback.onErrorLoadResponse(webServiceKey, e.toString());
                             e.printStackTrace();
                         }
                     } else {

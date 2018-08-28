@@ -2,12 +2,12 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 28
     buildToolsVersion '27.0.3'
 
     defaultConfig {
-        minSdkVersion 18
-        targetSdkVersion 25
+        minSdkVersion 21
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0.5"
 
@@ -33,7 +33,7 @@ buildscript {
         maven { url 'https://jitpack.io' }
     }
     dependencies {
-        classpath "io.realm:realm-gradle-plugin:4.1.0"
+        classpath "io.realm:realm-gradle-plugin:5.4.1"
     }
 }
 
@@ -41,16 +41,16 @@ apply plugin: 'realm-android'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:25.4.0'
+    implementation 'com.android.support:appcompat-v7:28.0.0-rc01'
 
     implementation 'com.squareup.retrofit2:converter-gson:2.2.0'
     implementation 'com.squareup.retrofit2:retrofit:2.2.0'
-    implementation 'com.android.support:design:25.4.0'
+    implementation 'com.android.support:design:28.0.0-rc01'
     implementation 'com.orhanobut:logger:2.2.0'
 
-    implementation 'com.squareup.okhttp:okhttp:2.5.0'
+    implementation 'com.squareup.okhttp:okhttp:2.7.5'
 
-    implementation 'com.android.support:recyclerview-v7:25.4.0'
+    implementation 'com.android.support:recyclerview-v7:28.0.0-rc01'
     implementation('com.github.ihsanbal:LoggingInterceptor:2.0.5') {
         exclude group: 'org.json', module: 'json'
     }
@@ -132,7 +132,7 @@ subprojects {
     tasks.withType(Javadoc).all { enabled = false }
 }
 
-version = '1.1.1'
+version = '1.1.4'
 bintray {
     user = 'kokcs'
     key = '860685032263e5ac0ba7ee6fdc5940c4218ed1fd'
@@ -141,10 +141,10 @@ bintray {
         name = 'utilities'
 
         version {
-            name = '1.1.1'
+            name = '1.1.4'
             desc = 'Android Library'
             released = new Date()
-            vcsTag = '1.1.1'
+            vcsTag = '1.1.4'
         }
 
         licenses = ['MIT']
